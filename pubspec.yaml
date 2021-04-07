@@ -1,0 +1,22 @@
+name: settings
+description: Settings for all library
+version: 0.0.1
+publish_to: none
+
+environment:
+  sdk: ^2.12.0
+  flutter: ">=1.17.0"
+
+dependencies:
+  ext:
+    git: https://github.com/lamtx/ext.git
+  flutter:
+    sdk: flutter
+  net:
+    git: https://github.com/lamtx/net.git
+  shared_preferences: ^2.0.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+flutter:
