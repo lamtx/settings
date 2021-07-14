@@ -130,4 +130,9 @@ class Settings {
         ? _prefs.remove(key)
         : _prefs.setInt(key, value.millisecondsSinceEpoch);
   }
+
+  List<String>? getStringList(String key) => _prefs.getStringList(key);
+
+  void setStringList(String key, List<String>? value) =>
+      value == null ? _prefs.remove(key) : _prefs.setStringList(key, value);
 }
