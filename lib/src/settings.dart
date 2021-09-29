@@ -135,4 +135,44 @@ class Settings {
 
   void setStringList(String key, List<String>? value) =>
       value == null ? _prefs.remove(key) : _prefs.setStringList(key, value);
+
+  int? getNullableInt(String key) {
+    return _prefs.getInt(key);
+  }
+
+  double? getNullableDouble(String key) {
+    return _prefs.getDouble(key);
+  }
+
+  List<int>? getIntList(String key) {
+    final list = getStringList(key);
+    if (list == null || list.isEmpty) {
+      return null;
+    }
+    return list.map(int.parse).toList();
+  }
+
+  void setIntList(String key, List<int>? value) {
+    if (value == null || value.isEmpty) {
+      _prefs.remove(key);
+    } else {
+      _prefs.setStringList(key, value.map((e) => e.toString()).toList());
+    }
+  }
+
+  List<double>? getDoubleList(String key) {
+    final list = getStringList(key);
+    if (list == null || list.isEmpty) {
+      return null;
+    }
+    return list.map(double.parse).toList();
+  }
+
+  void setDoubleList(String key, List<double>? value) {
+    if (value == null || value.isEmpty) {
+      _prefs.remove(key);
+    } else {
+      _prefs.setStringList(key, value.map((e) => e.toString()).toList());
+    }
+  }
 }
