@@ -145,34 +145,56 @@ class Settings {
   }
 
   List<int>? getIntList(String key) {
+    final cache = _objectCache[key];
+    if (cache != null) {
+      return cache as List<int>;
+    }
     final list = getStringList(key);
     if (list == null || list.isEmpty) {
       return null;
     }
-    return list.map(int.parse).toList();
+    final result = list.map(int.parse).toList();
+    _objectCache[key] = result;
+    return result;
   }
 
   void setIntList(String key, List<int>? value) {
     if (value == null || value.isEmpty) {
+      _objectCache.remove(key);
       _prefs.remove(key);
     } else {
-      _prefs.setStringList(key, value.map((e) => e.toString()).toList());
+      _objectCache[key] = value;
+      _prefs.setStringList(
+        key,
+        value.map((e) => e.toString()).toList(growable: false),
+      );
     }
   }
 
   List<double>? getDoubleList(String key) {
+    final cache = _objectCache[key];
+    if (cache != null) {
+      return cache as List<double>;
+    }
     final list = getStringList(key);
     if (list == null || list.isEmpty) {
       return null;
     }
-    return list.map(double.parse).toList();
+    final result = list.map(double.parse).toList();
+    _objectCache[key] = result;
+    return result;
   }
 
   void setDoubleList(String key, List<double>? value) {
     if (value == null || value.isEmpty) {
+      _objectCache.remove(key);
       _prefs.remove(key);
     } else {
-      _prefs.setStringList(key, value.map((e) => e.toString()).toList());
+      _objectCache[key] = value;
+      _prefs.setStringList(
+        key,
+        value.map((e) => e.toString()).toList(growable: false),
+      );
     }
   }
 }
