@@ -7,7 +7,6 @@ environment:
   sdk: ^2.12.0
 
 dependencies:
-  meta: any
   net:
     git: https://github.com/lamtx/net.git
-  shared_preferences: ^2.0.1
+  shared_preferences: any
