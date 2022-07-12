@@ -166,11 +166,11 @@ class Settings {
 }
 
 extension SettingsExt on Settings {
+  Duration getDuration(String key, [Duration defaultValue = Duration.zero]) =>
+      Duration(milliseconds: getInt(key, defaultValue.inMicroseconds));
+
   void setDuration(String key, Duration? value) =>
       setInt(key, value?.inMicroseconds);
-
-  void getDuration(String key, [Duration defaultValue = Duration.zero]) =>
-      getInt(key, defaultValue.inMicroseconds);
 
   DateTime? getDate(String key) {
     return getNullableInt(key)?.toDate();
