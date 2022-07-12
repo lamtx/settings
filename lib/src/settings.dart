@@ -167,7 +167,7 @@ class Settings {
 
 extension SettingsExt on Settings {
   Duration getDuration(String key, [Duration defaultValue = Duration.zero]) =>
-      Duration(milliseconds: getInt(key, defaultValue.inMicroseconds));
+      Duration(microseconds: getInt(key, defaultValue.inMicroseconds));
 
   void setDuration(String key, Duration? value) =>
       setInt(key, value?.inMicroseconds);
