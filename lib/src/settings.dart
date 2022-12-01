@@ -2,18 +2,10 @@ import 'package:net/net.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Settings {
-  factory Settings() => _instance ??= Settings._();
+  Settings(this._prefs);
 
-  Settings._();
-
-  static Settings? _instance;
-
-  late final SharedPreferences _prefs;
+  final SharedPreferences _prefs;
   final _objectCache = <String, Object>{};
-
-  Future<void> load() async {
-    _prefs = await SharedPreferences.getInstance();
-  }
 
   bool hasKey(String key) => _prefs.containsKey(key);
 
