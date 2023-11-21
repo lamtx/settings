@@ -1,7 +1,9 @@
+import 'dart:convert';
+
 import 'package:net/net.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class Settings {
+final class Settings {
   Settings(this._prefs);
 
   final SharedPreferences _prefs;
@@ -153,6 +155,35 @@ class Settings {
         key,
         value.map((e) => e.toString()).toList(growable: false),
       );
+    }
+  }
+
+  Map<K, V>? getMap<K, V>(String key) {
+    final cache = _objectCache[key];
+    if (cache != null) {
+      return cache as Map<K, V>;
+    }
+    final s = getString(key);
+    if (s == null || s.isEmpty) {
+      return null;
+    }
+    final dynamic map = json.decode(s);
+    if (map is Map) {
+      final forceCast = Map<K, V>.from(map);
+      _objectCache[key] = forceCast;
+      return forceCast;
+    } else {
+      throw Exception("The provided json is not a map");
+    }
+  }
+
+  void setMap<K, V>(String key, Map<K, V>? value) {
+    if (value == null) {
+      _objectCache.remove(key);
+      _prefs.remove(key);
+    } else {
+      _objectCache[key] = value;
+      _prefs.setString(key, json.encode(value));
     }
   }
 }
