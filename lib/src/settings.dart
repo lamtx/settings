@@ -158,10 +158,10 @@ final class Settings {
     }
   }
 
-  Map<K, V>? getMap<K, V>(String key) {
+  Map<String, V>? getMap<V>(String key) {
     final cache = _objectCache[key];
     if (cache != null) {
-      return cache as Map<K, V>;
+      return cache as Map<String, V>;
     }
     final s = getString(key);
     if (s == null || s.isEmpty) {
@@ -169,7 +169,7 @@ final class Settings {
     }
     final dynamic map = json.decode(s);
     if (map is Map) {
-      final forceCast = Map<K, V>.from(map);
+      final forceCast = Map<String, V>.from(map);
       _objectCache[key] = forceCast;
       return forceCast;
     } else {
@@ -177,7 +177,7 @@ final class Settings {
     }
   }
 
-  void setMap<K, V>(String key, Map<K, V>? value) {
+  void setMap<V>(String key, Map<String, V>? value) {
     if (value == null) {
       _objectCache.remove(key);
       _prefs.remove(key);
