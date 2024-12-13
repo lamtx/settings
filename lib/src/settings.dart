@@ -35,6 +35,30 @@ final class Settings {
     }
   }
 
+  T? getJson<T extends Object>(String key, JsonObjectFactory<T> fromJson) {
+    final cache = _objectCache[key];
+    if (cache != null) {
+      return cache as T;
+    }
+    final json = getString(key);
+    if (json == null || json.isEmpty) {
+      return null;
+    }
+    final result = fromJson.parseObject(json);
+    _objectCache[key] = result;
+    return result;
+  }
+
+  void setJson<T extends ToJson>(String key, T? value) {
+    if (value == null) {
+      _objectCache.remove(key);
+      _prefs.remove(key);
+    } else {
+      _objectCache[key] = value;
+      _prefs.setString(key, value.serializeAsJson());
+    }
+  }
+
   List<T>? getList<T>(String key, DataParser<T> parser) {
     final cache = _objectCache[key];
     if (cache != null) {
