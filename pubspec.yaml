@@ -7,6 +7,6 @@ environment:
   sdk: ^3.0.0
 
 dependencies:
-  net:
-    git: https://github.com/lamtx/net.git
+  ext:
+    git: https://github.com/lamtx/ext.git
   shared_preferences: any

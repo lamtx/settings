@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:net/net.dart';
+import 'package:ext/ext.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final class Settings {
@@ -10,78 +10,6 @@ final class Settings {
   final _objectCache = <String, Object>{};
 
   bool hasKey(String key) => _prefs.containsKey(key);
-
-  T? getObject<T extends Object>(String key, DataParser<T> parser) {
-    final cache = _objectCache[key];
-    if (cache != null) {
-      return cache as T;
-    }
-    final json = getString(key);
-    if (json == null || json.isEmpty) {
-      return null;
-    }
-    final result = parser.parseObject(json);
-    _objectCache[key] = result;
-    return result;
-  }
-
-  void setObject<T extends JsonObject>(String key, T? value) {
-    if (value == null) {
-      _objectCache.remove(key);
-      _prefs.remove(key);
-    } else {
-      _objectCache[key] = value;
-      _prefs.setString(key, value.serializeAsJson());
-    }
-  }
-
-  T? getJson<T extends Object>(String key, JsonObjectFactory<T> fromJson) {
-    final cache = _objectCache[key];
-    if (cache != null) {
-      return cache as T;
-    }
-    final json = getString(key);
-    if (json == null || json.isEmpty) {
-      return null;
-    }
-    final result = fromJson.parseObject(json);
-    _objectCache[key] = result;
-    return result;
-  }
-
-  void setJson<T extends ToJson>(String key, T? value) {
-    if (value == null) {
-      _objectCache.remove(key);
-      _prefs.remove(key);
-    } else {
-      _objectCache[key] = value;
-      _prefs.setString(key, value.serializeAsJson());
-    }
-  }
-
-  List<T>? getList<T>(String key, DataParser<T> parser) {
-    final cache = _objectCache[key];
-    if (cache != null) {
-      return cache as List<T>;
-    }
-    final json = getString(key);
-    if (json == null || json.isEmpty) {
-      return null;
-    }
-    final result = parser.parseList(json);
-    _objectCache[key] = result;
-    return result;
-  }
-
-  void setList<T extends JsonObject>(String key, List<T>? value) {
-    if (value == null || value.isEmpty) {
-      _objectCache.remove(key);
-      _prefs.remove(key);
-    } else {
-      _objectCache[key] = value;
-      _prefs.setString(key, value.serializeAsJson());
-    }
-  }
 
   String? getString(String key) {
     return _prefs.getString(key);
@@ -237,8 +165,52 @@ extension SettingsExt on Settings {
 
   void setEnum<T extends Enum>(String key, T? value) =>
       setInt(key, value?.index);
-}
 
-extension on int {
-  DateTime toDate() => DateTime.fromMillisecondsSinceEpoch(this);
+  T? getJson<T extends Object>(String key, JsonObjectFactory<T> fromJson) {
+    final cache = _objectCache[key];
+    if (cache != null) {
+      return cache as T;
+    }
+    final json = getString(key);
+    if (json == null || json.isEmpty) {
+      return null;
+    }
+    final result = fromJson.parseObject(json);
+    _objectCache[key] = result;
+    return result;
+  }
+
+  void setJson<T extends ToJson>(String key, T? value) {
+    if (value == null) {
+      _objectCache.remove(key);
+      _prefs.remove(key);
+    } else {
+      _objectCache[key] = value;
+      _prefs.setString(key, value.serializeAsJson());
+    }
+  }
+
+  List<T>? getList<T>(String key, JsonObjectFactory<T> parser) {
+    final cache = _objectCache[key];
+    if (cache != null) {
+      return cache as List<T>;
+    }
+    final json = getString(key);
+    if (json == null || json.isEmpty) {
+      return null;
+    }
+    final result = parser.parseList(json);
+    _objectCache[key] = result;
+    return result;
+  }
+
+  void setList<T extends ToJson>(String key, List<T>? value) {
+    if (value == null || value.isEmpty) {
+      _objectCache.remove(key);
+      _prefs.remove(key);
+    } else {
+      _objectCache[key] = value;
+      _prefs.setString(key, value.serializeAsJson());
+    }
+  }
 }
