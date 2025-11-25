@@ -175,9 +175,13 @@ extension SettingsExt on Settings {
     if (json == null || json.isEmpty) {
       return null;
     }
-    final result = fromJson.parseObject(json);
-    _objectCache[key] = result;
-    return result;
+    try {
+      final result = fromJson.parseObject(json);
+      _objectCache[key] = result;
+      return result;
+    } on Exception catch (_) {
+      return null;
+    }
   }
 
   void setJson<T extends ToJson>(String key, T? value) {
@@ -199,9 +203,13 @@ extension SettingsExt on Settings {
     if (json == null || json.isEmpty) {
       return null;
     }
-    final result = parser.parseList(json);
-    _objectCache[key] = result;
-    return result;
+    try {
+      final result = parser.parseList(json);
+      _objectCache[key] = result;
+      return result;
+    } on Exception catch (_) {
+      return null;
+    }
   }
 
   void setList<T extends ToJson>(String key, List<T>? value) {
